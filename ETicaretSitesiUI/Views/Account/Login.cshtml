@@ -1,0 +1,136 @@
+﻿@using ETicaretData.ViewModels
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #c3f0f9, #ffffff);
+        min-height: 100vh;
+    }
+
+    h2 {
+        font-weight: 700;
+        color: #4facfe;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: scale(1.015);
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.12);
+        }
+
+    .card-header {
+        background: linear-gradient(90deg, #4facfe, #00f2fe);
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+        .card-header h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+    .form-label {
+        color: #555;
+        font-weight: 500;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        transition: box-shadow 0.3s ease;
+    }
+
+        .form-control:focus {
+            box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+            border-color: #4facfe;
+        }
+
+    .btn-primary {
+        border-radius: 14px;
+        padding: 10px 20px;
+        color: #fff;
+        background: linear-gradient(270deg, #4facfe, #00f2fe, #4facfe);
+        background-size: 400% 400%;
+        animation: gradientWave 4s ease infinite;
+        border: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.6);
+            cursor: pointer;
+        }
+
+    @@keyframes gradientWave {
+        0%
+
+    {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+    }
+
+    .form-check-label {
+        color: #555;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header text-center text-white">
+                    <h3>Giriş Yap</h3>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.UserName, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Kullanıcı Adı" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group mt-3">
+                            @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Şifre" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check mt-3">
+                            @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input" })
+                            <label class="form-check-label">
+                                Beni Hatırla
+                            </label>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Giriş Yap</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

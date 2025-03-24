@@ -1,0 +1,56 @@
+﻿@using ETicaretData.ViewModels
+@model List<RoleAssingModels>
+@{
+    ViewData["Title"] = "RoleAssign";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary">@ViewBag.Username</h1>
+<h2 class="text-secondary">Role Assign</h2>
+<hr />
+
+@using (Html.BeginForm("RoleAssign", "User", FormMethod.Post, new { id = "roleAssignForm" }))
+{
+    <table class="table table-hover w-50 shadow-lg p-3 mb-5 bg-white rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Role Adı</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" asp-for="@Model[i].HasAssing" />
+                            <label class="form-check-label">@Model[i].Name</label>
+                        </div>
+                        <input type="hidden" asp-for="@Model[i].Id" />
+                        <input type="hidden" asp-for="@Model[i].Name" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-success" type="submit">Role Ata</button>
+}
+
+<!-- SweetAlert2 Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById("roleAssignForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Formun direkt gönderilmesini engelle
+
+        Swal.fire({
+            title: "Başarılı!",
+            text: "@ViewBag.Username adlı kişiye rol ataması başarıyla gerçekleştirildi.",
+            icon: "success",
+            confirmButtonText: "Tamam"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); // Kullanıcı "Tamam" dedikten sonra formu gönder
+            }
+        });
+    });
+</script>

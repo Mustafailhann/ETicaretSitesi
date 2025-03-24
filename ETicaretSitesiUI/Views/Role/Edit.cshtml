@@ -1,0 +1,38 @@
+﻿@using ETicaretData.Identity
+@model AppRole
+@{
+    ViewData["Title"] = "Edit Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary">Edit Role</h1>
+<hr />
+
+<form method="post" id="roleEditForm">
+    <div class="card shadow-lg p-4 bg-white rounded w-50">
+        <div class="form-group mb-3">
+            <label class="form-label fw-bold">Role Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter role name" />
+        </div>
+        <button type="submit" class="btn btn-success w-100">Update Role</button>
+    </div>
+</form>
+
+<!-- SweetAlert2 Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById("roleEditForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Formun direkt gönderilmesini engelle
+
+        Swal.fire({
+            title: "Başarılı!",
+            text: "Rol güncellemesi başarıyla gerçekleştirildi.",
+            icon: "success",
+            confirmButtonText: "Tamam"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); // Kullanıcı "Tamam" dedikten sonra formu gönder
+            }
+        });
+    });
+</script>

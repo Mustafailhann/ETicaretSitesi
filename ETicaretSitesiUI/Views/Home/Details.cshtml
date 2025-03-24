@@ -1,0 +1,125 @@
+﻿@using ETicaretData.Entities;
+@model Product
+@{
+    ViewData["Title"] = "Ürün Detayları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Random rnd = new Random();
+    double rating = Math.Round(rnd.NextDouble() * 2 + 3, 1); // 3.0 - 5.0 arası random puan
+    int reviewCount = rnd.Next(20, 250); // 20 - 250 arası random yorum
+    int viewingCount = rnd.Next(50, 300); // 50 - 300 arası şu anda inceleyen kişi
+}
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Ürün Görseli -->
+        <div class="col-lg-6">
+            <div class="p-4 bg-white shadow rounded-4">
+                <img src="@Model.Image" alt="@Model.Name" class="img-fluid rounded-4 w-100" style="object-fit: cover;">
+            </div>
+        </div>
+
+        <!-- Ürün Bilgileri -->
+        <div class="col-lg-6">
+            <div class="p-4 bg-white shadow rounded-4">
+                <h1 class="fw-bold text-dark mb-3">@Model.Name</h1>
+                <p class="text-muted mb-2">
+                    Ürün Kodu:
+                    <span class="badge rounded-pill bg-gradient text-white" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">#0342216</span>
+                </p>
+
+                <div class="d-flex align-items-center gap-3 my-4">
+                    <span class="badge bg-gradient text-white p-2 px-3" style="background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%); font-size: 1rem;">Stok: @Model.Stock</span>
+                    <span class="fs-2 fw-bold text-danger">@Model.Price.ToString("c")</span>
+                </div>
+
+                <p class="text-success fw-semibold mb-2">@viewingCount kişi şu anda inceliyor 🔎</p>
+
+                <!-- Yıldız Puanlama -->
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= Math.Floor(rating))
+                        {
+                            <i class="fa-solid fa-star text-warning fs-5"></i>
+                        }
+                        else if (i == Math.Ceiling(rating) && rating % 1 != 0)
+                        {
+                            <i class="fa-solid fa-star-half-stroke text-warning fs-5"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-regular fa-star text-warning fs-5"></i>
+                        }
+                    }
+                    <span class="fw-bold text-dark ms-2">@rating.ToString("0.0") / 5</span>
+                    <span class="badge bg-light text-dark ms-2">(@reviewCount Yorum)</span>
+                </div>
+
+                <p class="lead text-secondary mt-4">@Model.Description</p>
+
+                <a asp-action="Buy" asp-controller="Card" asp-route-id="@Model.Id" class="btn btn-gradient w-100 py-3 d-flex align-items-center justify-content-center gap-2 mt-4">
+                    <i class="fa-solid fa-cart-plus fs-5"></i> Sepete Ekle
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ürün Detayları Sekme -->
+    <div class="mt-5">
+        <ul class="nav nav-tabs border-0 justify-content-center" id="productTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold rounded-top desc-tab-custom" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc-tab-pane" type="button" role="tab" aria-controls="desc-tab-pane" aria-selected="true">Açıklama</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold rounded-top payment-tab-custom" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment-tab-pane" type="button" role="tab" aria-controls="payment-tab-pane" aria-selected="false">Ödeme Seçenekleri</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold rounded-top" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false">Yorumlar (@reviewCount)</button>
+            </li>
+        </ul>
+
+        <div class="tab-content bg-white p-4 rounded-bottom shadow-sm" id="productTabContent">
+            <div class="tab-pane fade show active" id="desc-tab-pane" role="tabpanel" aria-labelledby="desc-tab">
+                <p class="text-muted">@Model.Description</p>
+            </div>
+            <div class="tab-pane fade" id="payment-tab-pane" role="tabpanel" aria-labelledby="payment-tab">
+                <h5 class="fw-bold">Ödeme Seçenekleri</h5>
+                <p>Kredi kartı, banka kartı, havale/EFT ve kapıda ödeme seçenekleriyle satın alabilirsiniz.</p>
+            </div>
+            <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab">
+                <h5 class="fw-bold">Müşteri Yorumları (@reviewCount)</h5>
+                <p class="text-muted">Henüz yorum yapılmamış. İlk yorumu sen yap!</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .desc-tab-custom,
+        .payment-tab-custom {
+            color: black !important;
+        }
+    </style>
+
+    
+</div>
+
+<!-- Gradient Buton Stili -->
+<style>
+    .btn-gradient {
+        background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+        color: #fff;
+        border: none;
+        transition: all 0.3s;
+        border-radius: 50px;
+    }
+
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #9face6 0%, #74ebd5 100%);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transform: scale(1.03);
+        }
+</style>
+
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

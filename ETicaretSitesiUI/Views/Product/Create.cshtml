@@ -1,0 +1,82 @@
+﻿@model ETicaretData.Entities.Product
+@{
+    ViewData["Title"] = "Yeni Ürün Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h4><i class="fas fa-plus-circle"></i> Yeni Ürün Ekle</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Ürün Adı -->
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-bold"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Ürün adını giriniz..." />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Stok -->
+                        <div class="mb-3">
+                            <label asp-for="Stock" class="form-label fw-bold"></label>
+                            <input asp-for="Stock" class="form-control" type="number" min="0" placeholder="Stok miktarını giriniz..." />
+                            <span asp-validation-for="Stock" class="text-danger"></span>
+                        </div>
+
+                        <!-- Fiyat -->
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label fw-bold"></label>
+                            <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" placeholder="Fiyat giriniz..." />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <!-- Görsel URL -->
+                        <div class="mb-3">
+                            <label asp-for="Image" class="form-label fw-bold"></label>
+                            <input asp-for="Image" class="form-control" placeholder="Ürün görsel URL'sini giriniz..." />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+
+                        <!-- Kategori -->
+                        <div class="mb-3">
+                            <label asp-for="CategoryId" class="form-label fw-bold"></label>
+                            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                                <option value="">Kategori Seçiniz...</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Checkboxlar -->
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="IsHome" />
+                            <label class="form-check-label fw-bold" asp-for="IsHome"></label>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="IsApproved" />
+                            <label class="form-check-label fw-bold" asp-for="IsApproved"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Butonlar -->
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Geri Dön</a>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Ürünü Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

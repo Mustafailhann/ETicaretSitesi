@@ -1,0 +1,151 @@
+﻿@using ETicaretData.ViewModels
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #d4fbff, #c6f9ff, #d4fbff);
+        min-height: 100vh;
+    }
+
+    h3 {
+        font-weight: 700;
+        color: #43e97b;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: scale(1.015);
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.12);
+        }
+
+    .card-header {
+        background: linear-gradient(90deg, #43e97b, #38f9d7);
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+        .card-header h3 {
+            margin: 0;
+            font-weight: 600;
+            color: #fff;
+        }
+
+    .form-label {
+        color: #555;
+        font-weight: 500;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        transition: box-shadow 0.3s ease;
+    }
+
+        .form-control:focus {
+            box-shadow: 0 0 10px rgba(67, 233, 123, 0.4);
+            border-color: #43e97b;
+        }
+
+    .btn-success {
+        border-radius: 14px;
+        padding: 10px 20px;
+        color: #fff;
+        background: linear-gradient(270deg, #43e97b, #38f9d7, #43e97b);
+        background-size: 400% 400%;
+        animation: gradientWave 4s ease infinite;
+        border: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-success:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 20px rgba(67, 233, 123, 0.6);
+            cursor: pointer;
+        }
+
+    @@keyframes gradientWave {
+        0%
+
+    {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+    }
+
+    .form-check-label {
+        color: #555;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header text-center">
+                    <h3>Kayıt Ol</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Register" asp-controller="Account" method="post">
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="UserName" class="form-label"></label>
+                            <input asp-for="UserName" class="form-control" placeholder="Kullanıcı Adı" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label asp-for="Ad" class="form-label">Ad</label>
+                            <input asp-for="Ad" class="form-control" placeholder="Ad" />
+                            <span asp-validation-for="Ad" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label asp-for="soyad" class="form-label">Soyad</label>
+                            <input asp-for="soyad" class="form-control" placeholder="Soyad" />
+                            <span asp-validation-for="soyad" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Şifre" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">Kayıt Ol</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

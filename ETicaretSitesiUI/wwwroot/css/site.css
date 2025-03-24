@@ -1,0 +1,31 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.slider-img {
+    width: 100%;
+    height: 300px; /* slider yüksekliðini burada ayarla */
+    object-fit: contain; /* resim tam sýðacak, boþluk olursa olacak */
+    background-color: #e8f5f9; /* resim dýþýndaki boþluklara arka plan rengi ver (slider’ýn rengine göre deðiþtir) */
+    object-position: center;
+}
+
+.carousel-inner {
+    height: 300px;
+}
+
+

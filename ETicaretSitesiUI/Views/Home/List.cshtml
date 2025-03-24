@@ -1,0 +1,251 @@
+﻿@using ETicaretData.Identity;
+@using ETicaretData.ViewModels;
+@model ListViewModel
+@{
+    ViewData["Title"] = "Ürün Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/products.css" />
+
+<div class="container mt-4">
+
+    <!-- Kampanya Barı -->
+    <div class="campaign-bar text-center py-2 mb-4">
+        <span><strong>Bahar Fırsatları Başladı!</strong>  —  En seçkin ürünlerde büyük indirim!</span>
+        <a href="#" class="btn btn-light btn-sm ms-3">Alışverişe Başla</a>
+    </div>
+
+    <!-- Kategori Barı -->
+    <div class="category-bar shadow-sm mb-4">
+        @foreach (var category in Model.Categories)
+        {
+            <a href="@Url.Action("List", "Home", new { id = category.Id })" class="category-link">
+                @category.Name
+            </a>
+        }
+    </div>
+
+    <!-- Sabit Slider Alanı -->
+    <div class="fixed-slider mb-4">
+        <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner rounded-3 shadow-sm">
+                <div class="carousel-item active">
+                    <img src="/image/Kampanya2_slider_ready.jpg" class="d-block w-100" alt="Kampanya 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/1200x300?text=Kampanya+2" class="d-block w-100" alt="Kampanya 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/1200x300?text=Kampanya+3" class="d-block w-100" alt="Kampanya 3">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Ürün Arama -->
+    <div class="mb-4">
+        <input type="text" class="form-control shadow-sm" id="searchInput" placeholder="Ürün ara..." onkeyup="searchProducts()">
+    </div>
+
+    <!-- Slider Başlığı -->
+    <h4 class="text-success mb-3">@Model.UserName, Sana Özel Ürünler</h4>
+
+    @if (Model.Products.Count == 0)
+    {
+        <div class="alert alert-danger text-center shadow-sm rounded-3 p-3" role="alert">
+            <i class="fas fa-exclamation-triangle fa-lg me-2"></i>
+            <strong>Bu kategoride ürün bulunamadı.</strong>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center shadow-sm rounded-3 p-3" role="alert">
+            <i class="fas fa-box-open fa-lg me-2"></i>
+            <strong>@Model.Products.Count</strong> adet ürün bulundu.
+        </div>
+    }
+
+    <!-- Ürün Slider Alanı -->
+    <div class="product-slider-wrapper">
+        <div class="product-slider" id="productSlider">
+            @foreach (var product in Model.Products)
+            {
+                <div class="product-card shadow-sm">
+                    <div class="card-img-container">
+                        <img src="@product.Image" alt="@product.Name" class="product-image">
+                    </div>
+                    <div class="product-info text-center p-2">
+                        <h6 class="product-title text-success fw-bold mb-1">@product.Name</h6>
+                        <p class="text-muted mb-1">Stok: @product.Stock</p>
+                        <p class="product-price fw-bold fs-6 mb-2">@product.Price ₺</p>
+                        <a href="@Url.Action("Details", "Home", new { id = product.Id })" class="btn btn-outline-success w-100 rounded-pill">
+                            <i class="fas fa-info-circle me-1"></i> Detaylar
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <button class="slider-btn prev" onclick="slide(-1)">&#10094;</button>
+        <button class="slider-btn next" onclick="slide(1)">&#10095;</button>
+    </div>
+</div>
+
+<style>
+    .campaign-bar {
+        background-color: #28a745;
+        color: #fff;
+        font-size: 1rem;
+        border-radius: 6px;
+    }
+
+        .campaign-bar a {
+            color: #28a745;
+            background: #fff;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-weight: bold;
+        }
+
+    .fixed-slider img {
+        object-fit: cover;
+        height: 300px;
+    }
+
+    .product-slider-wrapper {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .product-slider {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding-bottom: 10px;
+    }
+
+        .product-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+    .product-card {
+        min-width: 200px;
+        max-width: 200px;
+        flex-shrink: 0;
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        background-color: #fff;
+        transition: transform 0.2s;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+    .card-img-container {
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        z-index: 100;
+        border-radius: 50%;
+        font-size: 22px;
+    }
+
+        .slider-btn.prev {
+            left: -5px;
+        }
+
+        .slider-btn.next {
+            right: -5px;
+        }
+
+        .slider-btn:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+    .category-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 15px 10px;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        justify-content: center;
+        border: 1px solid #eee;
+    }
+
+        .category-bar .category-link {
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #333;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+            .category-bar .category-link:hover {
+                background-color: #dff4e2;
+                color: #28a745;
+                border-color: #bde2c5;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            }
+
+    
+
+
+</style>
+
+<script>
+    function searchProducts() {
+        var input = document.getElementById("searchInput").value.toLowerCase();
+        var cards = document.querySelectorAll('.product-card');
+        cards.forEach(function (card) {
+            var title = card.querySelector('.product-title').textContent.toLowerCase();
+            card.style.display = title.includes(input) ? "inline-block" : "none";
+        });
+    }
+
+    function slide(direction) {
+        const slider = document.getElementById('productSlider');
+        const scrollAmount = 400;
+        slider.scrollBy({
+            top: 0,
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>

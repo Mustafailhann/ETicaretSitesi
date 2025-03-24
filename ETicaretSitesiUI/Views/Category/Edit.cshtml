@@ -1,0 +1,40 @@
+﻿@model ETicaretData.Entities.Category
+
+@{
+    ViewData["Title"] = "Kategori Düzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4 rounded-4" style="max-width: 500px; width: 100%;">
+        <div class="card-body">
+            <h2 class="text-center fw-bold text-primary mb-3">
+                <i class="fa-solid fa-pen-to-square"></i> Kategori Düzenle
+            </h2>
+
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Kategori Adı -->
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-bold">Kategori Adı</label>
+                    <input asp-for="Name" class="form-control rounded-3 shadow-sm" placeholder="Kategori adını girin" required>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Butonlar -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary btn-lg shadow-sm">
+                        <i class="fa-solid fa-arrow-left"></i> Geri Dön
+                    </a>
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                        <i class="fa-solid fa-check"></i> Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- FontAwesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

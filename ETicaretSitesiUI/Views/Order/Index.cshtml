@@ -1,0 +1,94 @@
+﻿@using ETicaretData.Entities
+@using ETicaretData.ViewModels
+@model List<Order>
+
+@{
+    ViewData["Title"] = "Sipariş Yönetimi";
+}
+
+<h2 class="text-center text-primary">Sipariş Yönetimi</h2>
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Sipariş Numarası</th>
+            <th>Müşteri</th>
+            <th>Toplam fiyat</th>
+            <th>İşlem Tarihi</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            var remainingTime = 60; // 1 dakika (60 saniye)
+            var elapsedTime = (DateTime.Now - order.OrderDate).TotalSeconds;
+            var countdown = Math.Max(0, remainingTime - (int)elapsedTime);
+            var minutes = (int)(countdown / 60);
+            var seconds = (int)(countdown % 60);
+
+            <tr>
+                <td>@order.Id</td>
+                <td> @order.OrderNumber</td>
+                <td>@order.UserName</td>
+                <td>@order.Total.ToString("C")</td>
+                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <span id="status-@order.Id" class="badge @(order.orderState == EnumOrderState.completed ? "bg-success" : order.orderState == EnumOrderState.waiting ? "bg-danger" : "bg-warning")">
+                        @(order.orderState == EnumOrderState.waiting ? "Onay Bekleniyor" : order.orderState == EnumOrderState.completed ? "Onaylandı" : "Onaylanmadı")
+                    </span>
+                </td>
+                <td>
+                    @if (order.orderState == EnumOrderState.waiting)
+                    {
+                        <span id="timer-@order.Id" class="text-danger">@($"{minutes:D2}:{seconds:D2}")</span>
+                        <form asp-action="Approve" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@order.Id" />
+                            <button type="submit" class="btn btn-success btn-sm">✔ Onayla</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Tamamlandı</span>
+                    }
+                </td>
+            </tr>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var countdown = @countdown;
+                    var timerElement = document.getElementById("timer-" + @order.Id);
+                    var statusElement = document.getElementById("status-" + @order.Id);
+
+                    function updateTimer() {
+                        if (countdown > 0) {
+                            countdown--;
+                            var minutes = Math.floor(countdown / 60);
+                            var seconds = countdown % 60;
+                            timerElement.innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                        } else {
+                            clearInterval(timerInterval);
+                            if (statusElement.innerText === "Onay Bekleniyor") {
+                                statusElement.classList.remove("bg-warning");
+                                statusElement.classList.add("bg-danger");
+                                statusElement.innerText = "Onaylanmadı";
+                            }
+
+                            fetch('/Order/AutoReject', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: 'id=' + @order.Id
+                            });
+                        }
+                    }
+
+                    var timerInterval = setInterval(updateTimer, 1000);
+                });
+            </script>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">➕ Yeni Sipariş Ekle</a>

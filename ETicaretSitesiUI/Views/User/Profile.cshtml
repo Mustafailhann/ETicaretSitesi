@@ -1,0 +1,40 @@
+﻿@model ETicaretData.ViewModels.ProfileViewModel
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);">
+                    <h4 class="text-center m-0">Profil Bilgilerim</h4>
+                </div>
+                <div class="card-body p-4">
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-success text-center">@ViewBag.Message</div>
+                    }
+                    <form method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Kullanıcı Adı</label>
+                            <input asp-for="UserName" class="form-control rounded-pill shadow-sm" placeholder="Kullanıcı adınızı girin" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">E-posta</label>
+                            <input asp-for="Email" class="form-control rounded-pill shadow-sm" placeholder="E-posta adresinizi girin" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ad</label>
+                            <input asp-for="Name" class="form-control rounded-pill shadow-sm" placeholder="Adınızı girin" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Soyad</label>
+                            <input asp-for="Surname" class="form-control rounded-pill shadow-sm" placeholder="Soyadınızı girin" />
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary rounded-pill shadow-sm py-2">Bilgileri Güncelle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
