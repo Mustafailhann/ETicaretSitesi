@@ -24,6 +24,16 @@ Bu proje, C# ile geliştirilen katmanlı mimariye sahip bir ASP.NET MVC E-Ticare
 1. Bu repoyu klonlayın veya zip olarak indirin:
    ```bash
    git clone https://github.com/Mustafailhann/ETicaretSitesi.git
+   Visual Studio ile ETicaretSitesi.sln dosyasını açın.
+
+Gerekli NuGet paketlerini yükleyin.
+
+Veritabanı bağlantı ayarlarını web.config dosyasında yapılandırın.
+
+Veritabanını oluşturun ve gerekli tabloları ekleyin.
+
+Uygulamayı başlatın.
+
 ## 🛒 Özellikler
 
 - Kategoriye göre ürün listeleme
